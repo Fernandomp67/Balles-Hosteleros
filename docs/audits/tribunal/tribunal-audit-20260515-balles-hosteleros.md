@@ -4,8 +4,8 @@ id: "tribunal-20260515-balles-hosteleros"
 tipo: "architecture"
 componente: "Balles Hosteleros SaaS"
 alcance: "Auditoria completa del estado real del SaaS externo en worktree reproducible"
-max_severity: "pending"
-status: "draft"
+max_severity: "critical"
+status: "reviewed"
 tags:
   - "saas-analysis"
   - "tenant-boundary"
@@ -18,12 +18,12 @@ auditor:
   session_id: "codex"
   timestamp: "2026-05-15"
   agent: "capataz -> saas-analyst + tenant-boundary-auditor + security-auditor"
-  findings_count: 0
-  confidence: "pending"
+  findings_count: 18
+  confidence: "high"
 executor:
   model: "GPT-5"
   session_id: "codex"
-  timestamp: ""
+  timestamp: "2026-05-15"
   agent: "N/A - auditoria sin cambios de codigo"
   commit_ref: "32cd5c3"
   accepted_count: 0
@@ -39,20 +39,20 @@ executor:
       - "npx tsc --noEmit"
       - "npm run build"
       - "npm run dev"
-    result: "pending"
-    notes: "Validacion dinamica preliminar reproducida antes del inicio formal."
+    result: "FAIL"
+    notes: "npm ci OK; lint, typecheck y build bloqueados; dev levanta parcialmente."
 judge:
   model: "GPT-5"
   session_id: "codex"
-  timestamp: ""
+  timestamp: "2026-05-15"
   agent: "final-auditor"
   review_batch: "balles-hosteleros-20260515"
-  auditor_score: null
+  auditor_score: 8
   executor_score: null
-  verdict: "pending"
+  verdict: "NO-GO"
   drift_detected: false
-  new_audit_recommended: false
-  notes: ""
+  new_audit_recommended: true
+  notes: "Producto real y continuable, pero bloqueado para produccion por QA, seguridad y tenant-boundary."
 ---
 
 # TRIBUNAL Audit `tribunal-20260515-balles-hosteleros`
@@ -60,7 +60,7 @@ judge:
 > Componente: `Balles Hosteleros SaaS`
 > Alcance: `Auditoria completa del estado real del SaaS externo en worktree reproducible`
 > Tipo: `architecture`
-> Estado: `draft`
+> Estado: `reviewed`
 
 ## Decision de Capataz
 
@@ -116,8 +116,23 @@ judge:
 ## Estado
 
 - `capataz`: completado
-- `saas-analyst`: en curso
-- `tenant-boundary-auditor`: en curso
-- `security-auditor`: en curso
-- `qa-gate`: pendiente
-- `final-auditor`: pendiente
+- `saas-analyst`: completado
+- `tenant-boundary-auditor`: completado
+- `security-auditor`: completado
+- `qa-gate`: completado
+- `final-auditor`: completado
+
+## Cierre Final Auditor
+
+- Decision: `NO-GO`
+- Informe: `docs/audits/tribunal/final-audit-20260515-balles-hosteleros.md`
+- Motivo: `qa-gate` falla, `security-auditor` reporta 9 bloqueantes y `tenant-boundary-auditor` concluye que la frontera SaaS/tenant solo esta parcialmente resuelta.
+- Dictamen base: `saas-analyst` clasifica el repo como `APTO CON REPARACIONES`: producto real y continuable para Balles Hosteleros, no listo para produccion ni base generica sin remediacion.
+
+## Artefactos Generados
+
+- `docs/legacy/ANALYSIS.md`
+- `docs/audits/tribunal/security-audit-20260515-balles-hosteleros.md`
+- `docs/audits/tribunal/tenant-boundary-audit-20260515-balles-hosteleros.md`
+- `docs/audits/tribunal/qa-gate-20260515-balles-hosteleros.md`
+- `docs/audits/tribunal/final-audit-20260515-balles-hosteleros.md`
